@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-import { userContext } from "../App";
+import React, { useEffect, useState } from "react";
 import "../style/style.css";
+import { BiEdit, BiTrash, BiShow } from "react-icons/bi";
 
+//get user from localstorage
 const getUserFromLocalStorage = () => {
   let userData = JSON.parse(localStorage.getItem("users-data"));
   if (userData) {
@@ -9,6 +10,7 @@ const getUserFromLocalStorage = () => {
   } else return [];
 };
 
+//phone number validate function
 const validatePhone = (phone) => {
   let phoneValid = /^(?:\+88|01)?\d{11}\r?$/.test(phone);
   if (phoneValid) {
@@ -26,6 +28,7 @@ const InputUser = () => {
 
   const [err, setErr] = useState(false);
 
+  // add user
   const handleSubmit = (e) => {
     e.preventDefault();
     let isValid = validatePhone(phone);
@@ -42,6 +45,13 @@ const InputUser = () => {
       setErr(true);
     }
   };
+
+  const handleDelete = (id) => {
+    let deleteUser = user.filter((user) => user.id !== id);
+    setUser(deleteUser);
+  };
+
+  // save user in localstorage
   useEffect(() => {
     localStorage.setItem("users-data", JSON.stringify(user));
   }, [user]);
@@ -70,6 +80,40 @@ const InputUser = () => {
             SUBMIT
           </button>
         </form>
+      </div>
+      {/* User Data Table */}
+      <div className="table-container">
+        <div className="user-table-container">
+          <p className="table-title">User Data</p>
+          {user.length ? (
+            <div className="table-container">
+              <div className="user-data table-header">
+                <div className="data-row">NAME</div>
+                <div className="data-row">PHONE</div>
+                <div className="data-row">ACTION</div>
+              </div>
+              {user.map((user) => (
+                <div className="user-data user-data-content" key={user.id}>
+                  <div className="data-row">{user.name}</div>
+                  <div className="data-row">{user.phone}</div>
+                  <div className="data-row">
+                    <button>
+                      <BiShow className="icon-btn" />
+                    </button>
+                    <button>
+                      <BiEdit className="icon-btn" />
+                    </button>
+                    <button onClick={() => handleDelete(user.id)}>
+                      <BiTrash className="icon-btn" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="user-not-found">No user found!</div>
+          )}
+        </div>
       </div>
     </div>
   );
