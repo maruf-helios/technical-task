@@ -12,6 +12,7 @@
 @media screen and (max-width: 768px) {
   .main-container {
     width: 70%;
+    margin: 0px auto;
   }
 }
 
@@ -102,6 +103,14 @@
 
 .main-container .table-container .user-table-container .user-not-found {
   text-align: center;
+}
+
+.main-container .table-container .user-table-container .user-not-found .add-user-req {
+  font-size: small;
+  margin-left: 5px;
+  text-decoration: underline;
+  cursor: pointer;
+  color: #428eff;
 }
 
 .main-container .modal {

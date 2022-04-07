@@ -99,8 +99,6 @@ const InputUserAndTable = () => {
     localStorage.setItem("users-data", JSON.stringify(user));
   }, [user]);
 
-  console.log(updateAbleUserData);
-
   return (
     <div className="main-container">
       {!isUpdate ? (
@@ -131,6 +129,7 @@ const InputUserAndTable = () => {
         </div>
       ) : (
         <div className="form-container">
+          <p className="form-title">Update User</p>
           <form onSubmit={handleUpdate}>
             <label className="input-label">User Name</label>
             <input
@@ -187,7 +186,12 @@ const InputUserAndTable = () => {
               ))}
             </div>
           ) : (
-            <div className="user-not-found">No user found!</div>
+            <div className="user-not-found">
+              No user found!{" "}
+              <span onClick={() => setIsUpdate(false)} className="add-user-req">
+                Add user
+              </span>
+            </div>
           )}
         </div>
       </div>
