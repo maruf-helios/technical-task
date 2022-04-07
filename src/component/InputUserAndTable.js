@@ -20,7 +20,7 @@ const validatePhone = (phone) => {
   }
 };
 
-const InputUser = () => {
+const InputUserAndTable = () => {
   const [user, setUser] = useState(getUserFromLocalStorage());
 
   const [name, setName] = useState("");
@@ -29,6 +29,9 @@ const InputUser = () => {
   const [err, setErr] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [updateUserId, setUpdateUserId] = useState("");
+  const [updateAbleUserData, setUpdateAbleUserData] = useState();
+  const [viewUser, setViewUser] = useState();
+  const [open, setOpen] = useState(false);
 
   // add user
   const handleSubmit = (e) => {
@@ -40,8 +43,9 @@ const InputUser = () => {
         phone: phone,
         id: Math.floor(1000 + Math.random() * 9000),
       };
-      console.log(getInputUser);
       setUser([...user, getInputUser]);
+      // setName("");
+      // setPhone("");
       setErr(false);
     } else {
       setErr(true);
@@ -58,6 +62,10 @@ const InputUser = () => {
   const getUpdateUser = (id) => {
     setIsUpdate(true);
     setUpdateUserId(id);
+    const findUser = user.find((user) => user.id === id);
+    setUpdateAbleUserData(findUser);
+    setName("");
+    setPhone("");
   };
 
   //handle update user
@@ -70,12 +78,20 @@ const InputUser = () => {
       findUser.phone = phone;
       setUser(updateAbleUser);
       setErr(false);
+      setIsUpdate(false);
+      setName("");
+      setPhone("");
     } else {
       setErr(true);
     }
     e.preventDefault();
-    setIsUpdate(false);
-    console.log(user);
+  };
+
+  // handle ViewUser
+  const viewUpdateUser = (id) => {
+    const findUser = user.find((user) => user.id === id);
+    setViewUser(findUser);
+    setOpen(true);
   };
 
   // save user in localstorage
@@ -83,12 +99,13 @@ const InputUser = () => {
     localStorage.setItem("users-data", JSON.stringify(user));
   }, [user]);
 
-  //   console.log(set);
+  console.log(updateAbleUserData);
 
   return (
     <div className="main-container">
       {!isUpdate ? (
         <div className="form-container">
+          <p className="form-title">Add User</p>
           <form onSubmit={handleSubmit}>
             <label className="input-label">User Name</label>
             <input
@@ -104,7 +121,9 @@ const InputUser = () => {
               required
               type="text"
             />
-            <label>{err && <p>Enter valid number</p>}</label>
+            <label>
+              {err && <p className="err-msg">Enter valid number!</p>}
+            </label>
             <button className="input-btn" type="submit">
               ADD USER
             </button>
@@ -117,6 +136,7 @@ const InputUser = () => {
             <input
               onChange={(e) => setName(e.target.value)}
               value={name}
+              placeholder={updateAbleUserData.name}
               required
               type="text"
             />
@@ -124,10 +144,13 @@ const InputUser = () => {
             <input
               onChange={(e) => setPhone(e.target.value)}
               value={phone}
+              placeholder={updateAbleUserData.phone}
               required
               type="text"
             />
-            <label>{err && <p>Enter valid number</p>}</label>
+            <label>
+              {err && <p className="err-msg">Enter valid number!</p>}
+            </label>
             <button className="input-btn" type="submit">
               UPDATE USER
             </button>
@@ -150,14 +173,11 @@ const InputUser = () => {
                   <div className="data-row">{user.name}</div>
                   <div className="data-row">{user.phone}</div>
                   <div className="data-row">
-                    <button>
+                    <button onClick={() => viewUpdateUser(user.id)}>
                       <BiShow className="icon-btn" />
                     </button>
-                    <button>
-                      <BiEdit
-                        onClick={() => getUpdateUser(user.id)}
-                        className="icon-btn"
-                      />
+                    <button onClick={() => getUpdateUser(user.id)}>
+                      <BiEdit className="icon-btn" />
                     </button>
                     <button onClick={() => handleDelete(user.id)}>
                       <BiTrash className="icon-btn" />
@@ -171,10 +191,23 @@ const InputUser = () => {
           )}
         </div>
       </div>
+      <div className="modal" style={{ display: open ? "block" : "none" }}>
+        <div className="modal-content">
+          <div className="close-btn">
+            <button onClick={() => setOpen(!open)}>X</button>
+          </div>
+          <p className="view-title">User Info</p>
+          {open && (
+            <div>
+              <p>User ID: {viewUser.id}</p>
+              <p>User Name: {viewUser.name}</p>
+              <p>Phone NO: {viewUser.phone}</p>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default InputUser;
-
-// handleUpdate(user.id)
+export default InputUserAndTable;
