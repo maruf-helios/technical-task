@@ -27,6 +27,8 @@ const InputUser = () => {
   const [phone, setPhone] = useState("");
 
   const [err, setErr] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [updateUserId, setUpdateUserId] = useState("");
 
   // add user
   const handleSubmit = (e) => {
@@ -46,9 +48,34 @@ const InputUser = () => {
     }
   };
 
+  //handle delete user
   const handleDelete = (id) => {
     let deleteUser = user.filter((user) => user.id !== id);
     setUser(deleteUser);
+  };
+
+  //get updateable user
+  const getUpdateUser = (id) => {
+    setIsUpdate(true);
+    setUpdateUserId(id);
+  };
+
+  //handle update user
+  const handleUpdate = (e) => {
+    let isValid = validatePhone(phone);
+    if (isValid && name) {
+      let updateAbleUser = [...user];
+      let findUser = updateAbleUser.find((user) => user.id === updateUserId);
+      findUser.name = name;
+      findUser.phone = phone;
+      setUser(updateAbleUser);
+      setErr(false);
+    } else {
+      setErr(true);
+    }
+    e.preventDefault();
+    setIsUpdate(false);
+    console.log(user);
   };
 
   // save user in localstorage
@@ -56,31 +83,57 @@ const InputUser = () => {
     localStorage.setItem("users-data", JSON.stringify(user));
   }, [user]);
 
-  console.log(user);
+  //   console.log(set);
+
   return (
     <div className="main-container">
-      <div className="form-container">
-        <form onSubmit={handleSubmit}>
-          <label className="input-label">User Name</label>
-          <input
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-            required
-            type="text"
-          />
-          <label className="input-label">Phone</label>
-          <input
-            onChange={(e) => setPhone(e.target.value)}
-            value={phone}
-            required
-            type="text"
-          />
-          <label>{err && <p>Enter valid number</p>}</label>
-          <button className="input-btn" type="submit">
-            SUBMIT
-          </button>
-        </form>
-      </div>
+      {!isUpdate ? (
+        <div className="form-container">
+          <form onSubmit={handleSubmit}>
+            <label className="input-label">User Name</label>
+            <input
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              required
+              type="text"
+            />
+            <label className="input-label">Phone</label>
+            <input
+              onChange={(e) => setPhone(e.target.value)}
+              value={phone}
+              required
+              type="text"
+            />
+            <label>{err && <p>Enter valid number</p>}</label>
+            <button className="input-btn" type="submit">
+              ADD USER
+            </button>
+          </form>
+        </div>
+      ) : (
+        <div className="form-container">
+          <form onSubmit={handleUpdate}>
+            <label className="input-label">User Name</label>
+            <input
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              required
+              type="text"
+            />
+            <label className="input-label">Phone</label>
+            <input
+              onChange={(e) => setPhone(e.target.value)}
+              value={phone}
+              required
+              type="text"
+            />
+            <label>{err && <p>Enter valid number</p>}</label>
+            <button className="input-btn" type="submit">
+              UPDATE USER
+            </button>
+          </form>
+        </div>
+      )}
       {/* User Data Table */}
       <div className="table-container">
         <div className="user-table-container">
@@ -101,7 +154,10 @@ const InputUser = () => {
                       <BiShow className="icon-btn" />
                     </button>
                     <button>
-                      <BiEdit className="icon-btn" />
+                      <BiEdit
+                        onClick={() => getUpdateUser(user.id)}
+                        className="icon-btn"
+                      />
                     </button>
                     <button onClick={() => handleDelete(user.id)}>
                       <BiTrash className="icon-btn" />
@@ -120,3 +176,5 @@ const InputUser = () => {
 };
 
 export default InputUser;
+
+// handleUpdate(user.id)
