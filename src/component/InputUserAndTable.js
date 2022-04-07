@@ -177,8 +177,10 @@ const InputUserAndTable = () => {
               </div>
               {user.map((user) => (
                 <div className="user-data user-data-content" key={user.id}>
-                  <div className="data-row">{user.name}</div>
-                  <div className="data-row">{user.phone}</div>
+                  <div className="data-row" style={{ overflow: "auto" }}>
+                    {user.name}
+                  </div>
+                  <div className="data-row" style={{padding:"0px 5px"}}>{user.phone}</div>
                   <div className="data-row">
                     <button onClick={() => viewUpdateUser(user.id)}>
                       <BiShow className="icon-btn" />
