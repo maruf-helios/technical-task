@@ -1,0 +1,30 @@
+.main-container {
+  width: 40%;
+  margin: auto;
+  padding: 30px;
+}
+
+.main-container .form-container label {
+  display: block;
+  margin: 10px 0px;
+}
+
+.main-container .form-container input {
+  display: block;
+  width: 80%;
+  padding: 5px;
+  border: 1px solid #80dbff;
+}
+
+.main-container .form-container input:focus {
+  outline: 1px solid #80dbff;
+}
+
+.main-container .form-container button {
+  margin-top: 15px;
+  background-color: #428eff;
+  border: none;
+  padding: 5px 15px;
+  color: white;
+}
+/*# sourceMappingURL=style.css.map */

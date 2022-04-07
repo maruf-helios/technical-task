@@ -1,0 +1,28 @@
+.main-container {
+  width: 40%;
+//   background-color: antiquewhite;
+  margin: auto;
+  padding: 30px;
+  .form-container {
+    label {
+      display: block;
+      margin: 10px 0px;
+    }
+    input {
+      display: block;
+      width: 80%;
+      padding: 5px;
+      border: 1px solid rgb(128, 219, 255);
+    }
+    input:focus {
+      outline: 1px solid rgb(128, 219, 255);
+    }
+    button {
+      margin-top: 15px;
+      background-color: rgb(66, 142, 255);
+      border: none;
+      padding: 5px 15px;
+      color: white;
+    }
+  }
+}
