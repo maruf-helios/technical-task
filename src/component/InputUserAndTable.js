@@ -101,6 +101,7 @@ const InputUserAndTable = () => {
 
   return (
     <div className="main-container">
+      {/* ADD User form */}
       {!isUpdate ? (
         <div className="form-container">
           <p className="form-title">Add User</p>
@@ -128,6 +129,7 @@ const InputUserAndTable = () => {
           </form>
         </div>
       ) : (
+        // Update User form
         <div className="form-container">
           <p className="form-title">Update User</p>
           <form onSubmit={handleUpdate}>
