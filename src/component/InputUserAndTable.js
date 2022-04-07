@@ -12,7 +12,7 @@ const getUserFromLocalStorage = () => {
 
 //phone number validate function
 const validatePhone = (phone) => {
-  let phoneValid = /^(?:\+88|01)?\d{11}\r?$/.test(phone);
+  let phoneValid = /(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/.test(phone);
   if (phoneValid) {
     return true;
   } else {
@@ -57,15 +57,14 @@ const InputUserAndTable = () => {
     let deleteUser = user.filter((user) => user.id !== id);
     setUser(deleteUser);
   };
-
   //get updateable user
   const getUpdateUser = (id) => {
     setIsUpdate(true);
     setUpdateUserId(id);
     const findUser = user.find((user) => user.id === id);
     setUpdateAbleUserData(findUser);
-    setName("");
-    setPhone("");
+    setName(findUser.name);
+    setPhone(findUser.phone);
   };
 
   //handle update user
@@ -130,33 +129,40 @@ const InputUserAndTable = () => {
         </div>
       ) : (
         // Update User form
-        <div className="form-container">
-          <p className="form-title">Update User</p>
-          <form onSubmit={handleUpdate}>
-            <label className="input-label">User Name</label>
-            <input
-              onChange={(e) => setName(e.target.value)}
-              value={name}
-              placeholder={updateAbleUserData.name}
-              required
-              type="text"
-            />
-            <label className="input-label">Phone</label>
-            <input
-              onChange={(e) => setPhone(e.target.value)}
-              value={phone}
-              placeholder={updateAbleUserData.phone}
-              required
-              type="text"
-            />
-            <label>
-              {err && <p className="err-msg">Enter valid number!</p>}
-            </label>
-            <button className="input-btn" type="submit">
-              UPDATE USER
-            </button>
-          </form>
-        </div>
+
+        <>
+          {user.length ? (
+            <div className="form-container">
+              <p className="form-title">Update User</p>
+              <form onSubmit={handleUpdate}>
+                <label className="input-label">User Name</label>
+                <input
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
+                  placeholder={updateAbleUserData.name}
+                  required
+                  type="text"
+                />
+                <label className="input-label">Phone</label>
+                <input
+                  onChange={(e) => setPhone(e.target.value)}
+                  value={phone}
+                  placeholder={updateAbleUserData.phone}
+                  required
+                  type="text"
+                />
+                <label>
+                  {err && <p className="err-msg">Enter valid number!</p>}
+                </label>
+                <button className="input-btn" type="submit">
+                  UPDATE USER
+                </button>
+              </form>
+            </div>
+          ) : (
+            ""
+          )}
+        </>
       )}
       {/* User Data Table */}
       <div className="table-container">

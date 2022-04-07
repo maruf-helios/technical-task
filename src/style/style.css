@@ -128,7 +128,7 @@
 }
 
 .main-container .modal .modal-content {
-  max-width: 400px;
+  max-width: 40%;
   height: auto;
   background: #fff;
   margin: auto;
@@ -148,5 +148,11 @@
 
 .main-container .modal .modal-content .close-btn button {
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .main-container .modal .modal-content {
+    width: 70%;
+  }
 }
 /*# sourceMappingURL=style.css.map */
