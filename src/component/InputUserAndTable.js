@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../style/style.css";
+import "../style/style.scss";
 import { BiEdit, BiTrash, BiShow } from "react-icons/bi";
 
 //get user from localstorage
