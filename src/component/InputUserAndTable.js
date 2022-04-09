@@ -31,12 +31,12 @@ const InputUserAndTable = () => {
   const [viewUser, setViewUser] = useState();
   const [open, setOpen] = useState(false);
 
+  //handle form data
   const handleOnChange = (e) => {
     const newUser = { ...getUserData };
     newUser[e.target.name] = e.target.value;
     setGetUserData(newUser);
   };
-  console.log(getUserData);
 
   // add user
   const handleSubmit = (e) => {
@@ -56,6 +56,9 @@ const InputUserAndTable = () => {
   const handleDelete = (id) => {
     let deleteUser = user.filter((user) => user.id !== id);
     setUser(deleteUser);
+    if (user.length === 0) {
+      setGetUserData({});
+    }
   };
 
   //get updateable user
@@ -91,8 +94,6 @@ const InputUserAndTable = () => {
   useEffect(() => {
     localStorage.setItem("users-data", JSON.stringify(user));
   }, [user]);
-
-  // console.log("hit get", getUserData);
 
   return (
     <div className="main-container">
