@@ -23,29 +23,29 @@ const validatePhone = (phone) => {
 const InputUserAndTable = () => {
   const [user, setUser] = useState(getUserFromLocalStorage());
 
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [getUserData, setGetUserData] = useState({});
 
   const [err, setErr] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [updateUserId, setUpdateUserId] = useState("");
-  const [updateAbleUserData, setUpdateAbleUserData] = useState();
   const [viewUser, setViewUser] = useState();
   const [open, setOpen] = useState(false);
+
+  const handleOnChange = (e) => {
+    const newUser = { ...getUserData };
+    newUser[e.target.name] = e.target.value;
+    setGetUserData(newUser);
+  };
+  console.log(getUserData);
 
   // add user
   const handleSubmit = (e) => {
     e.preventDefault();
-    let isValid = validatePhone(phone);
-    if (isValid && name) {
-      let getInputUser = {
-        name: name,
-        phone: phone,
-        id: Math.floor(1000 + Math.random() * 9000),
-      };
-      setUser([...user, getInputUser]);
-      // setName("");
-      // setPhone("");
+    if (validatePhone(getUserData.phone)) {
+      const userData = { ...getUserData };
+      userData.id = Math.floor(1000 + Math.random() * 9000);
+      setGetUserData(userData);
+      setUser([...user, getUserData]);
       setErr(false);
     } else {
       setErr(true);
@@ -57,32 +57,26 @@ const InputUserAndTable = () => {
     let deleteUser = user.filter((user) => user.id !== id);
     setUser(deleteUser);
   };
+
   //get updateable user
   const getUpdateUser = (id) => {
     setIsUpdate(true);
     setUpdateUserId(id);
     const findUser = user.find((user) => user.id === id);
-    setUpdateAbleUserData(findUser);
-    setName(findUser.name);
-    setPhone(findUser.phone);
+    setGetUserData(findUser);
   };
 
   //handle update user
   const handleUpdate = (e) => {
-    let isValid = validatePhone(phone);
-    if (isValid && name) {
+    if (validatePhone(getUserData.phone)) {
       let updateAbleUser = [...user];
       let findUser = updateAbleUser.find((user) => user.id === updateUserId);
-      findUser.name = name;
-      findUser.phone = phone;
+      findUser.name = getUserData.name;
+      findUser.phone = getUserData.phone;
       setUser(updateAbleUser);
-      setErr(false);
       setIsUpdate(false);
-      setName("");
-      setPhone("");
-    } else {
-      setErr(true);
-    }
+      setErr(false);
+    } else setErr(true);
     e.preventDefault();
   };
 
@@ -98,6 +92,8 @@ const InputUserAndTable = () => {
     localStorage.setItem("users-data", JSON.stringify(user));
   }, [user]);
 
+  // console.log("hit get", getUserData);
+
   return (
     <div className="main-container">
       {/* ADD User form */}
@@ -107,17 +103,19 @@ const InputUserAndTable = () => {
           <form onSubmit={handleSubmit}>
             <label className="input-label">User Name</label>
             <input
-              onChange={(e) => setName(e.target.value)}
-              value={name}
+              onChange={handleOnChange}
+              // value={name}
               required
               type="text"
+              name="name"
             />
             <label className="input-label">Phone</label>
             <input
-              onChange={(e) => setPhone(e.target.value)}
-              value={phone}
+              onChange={handleOnChange}
+              // value={phone}
               required
               type="text"
+              name="phone"
             />
             <label>
               {err && <p className="err-msg">Enter valid number!</p>}
@@ -137,18 +135,20 @@ const InputUserAndTable = () => {
               <form onSubmit={handleUpdate}>
                 <label className="input-label">User Name</label>
                 <input
-                  onChange={(e) => setName(e.target.value)}
-                  value={name}
-                  placeholder={updateAbleUserData.name}
+                  onChange={handleOnChange}
+                  value={getUserData.name}
+                  // placeholder={updateAbleUserData.name}
                   required
+                  name="name"
                   type="text"
                 />
                 <label className="input-label">Phone</label>
                 <input
-                  onChange={(e) => setPhone(e.target.value)}
-                  value={phone}
-                  placeholder={updateAbleUserData.phone}
+                  onChange={handleOnChange}
+                  value={getUserData.phone}
+                  // placeholder={updateAbleUserData.phone}
                   required
+                  name="phone"
                   type="text"
                 />
                 <label>
@@ -180,7 +180,9 @@ const InputUserAndTable = () => {
                   <div className="data-row" style={{ overflow: "auto" }}>
                     {user.name}
                   </div>
-                  <div className="data-row" style={{padding:"0px 5px"}}>{user.phone}</div>
+                  <div className="data-row" style={{ padding: "0px 5px" }}>
+                    {user.phone}
+                  </div>
                   <div className="data-row">
                     <button onClick={() => viewUpdateUser(user.id)}>
                       <BiShow className="icon-btn" />
