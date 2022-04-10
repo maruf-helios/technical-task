@@ -47,7 +47,7 @@
       color: red;
     }
   }
-  .table-container {
+  .main-table-container {
     .user-table-container {
       .table-title {
         text-align: center;
@@ -63,10 +63,13 @@
           font-size: small;
           padding: 3px;
           flex-direction: row;
-          justify-content: space-between;
+          justify-content: space-evenly;
           position: sticky;
           top: 0;
           background-color: rgb(66, 142, 255);
+          @media screen and (max-width: 600px) {
+            display: none;
+          }
           .data-row {
             color: #fff;
           }
@@ -77,11 +80,27 @@
           justify-content: space-between;
           padding: 2px 0;
           font-size: small;
+          @media screen and (max-width: 600px) {
+            flex-direction: column;
+            margin: 10px 0;
+            .data-row {
+              margin: 5px;
+            }
+          }
           .data-overflow {
             overflow: auto;
           }
           .data-row {
             flex: 0 0 25%;
+            span {
+              display: none;
+            }
+            @media screen and (max-width: 600px) {
+              span {
+                display: inline;
+                margin-right: 10px;
+              }
+            }
           }
           button {
             border: none;

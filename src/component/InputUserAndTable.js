@@ -152,7 +152,7 @@ const InputUserAndTable = () => {
         </>
       )}
       {/* User Data Table */}
-      <div className="table-container">
+      <div className="main-table-container">
         <div className="user-table-container">
           <p className="table-title">User Data</p>
           {user.length ? (
@@ -164,9 +164,16 @@ const InputUserAndTable = () => {
               </div>
               {user.map((user) => (
                 <div className="user-data user-data-content" key={user.id}>
-                  <div className="data-row data-overflow">{user.name}</div>
-                  <div className="data-row data-overflow">{user.phone}</div>
+                  <div className="data-row data-overflow">
+                    <span>Name:</span>
+                    {user.name}
+                  </div>
+                  <div className="data-row data-overflow">
+                    <span>Phone:</span>
+                    {user.phone}
+                  </div>
                   <div className="data-row">
+                    <span>Actions:</span>
                     <button onClick={() => navigate(`/view/${user.id}`)}>
                       <BiShow className="icon-btn" />
                     </button>
