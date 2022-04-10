@@ -1,15 +1,17 @@
-import { createContext, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import InputUserAndTable from "./component/InputUserAndTable";
-
-export const userContext = createContext();
+import ViewUserData from "./component/ViewUserData";
 
 function App() {
-  const [userData, setUserData] = useState();
   return (
-    <userContext.Provider value={[userData, setUserData]}>
-      <InputUserAndTable />
-    </userContext.Provider>
+    <BrowserRouter>
+      <Routes>
+        {/* <InputUserAndTable /> */}
+        <Route path="/" element={<InputUserAndTable/>}/>
+        <Route path="view/:id" element={<ViewUserData/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
