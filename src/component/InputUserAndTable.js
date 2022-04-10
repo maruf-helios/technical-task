@@ -83,111 +83,116 @@ const InputUserAndTable = () => {
   }, [user]);
 
   return (
-    <div className="main-container">
-      {/* ADD User form */}
-      {!isUpdate ? (
-        <div className="form-container">
-          <p className="form-title">Add User</p>
-          <form onSubmit={handleSubmit}>
-            <label className="input-label">User Name</label>
-            <input
-              onChange={handleOnChange}
-              // value={name}
-              required
-              type="text"
-              name="name"
-            />
-            <label className="input-label">Phone</label>
-            <input
-              onChange={handleOnChange}
-              // value={phone}
-              required
-              type="text"
-              name="phone"
-            />
-            <label>
-              {err && <p className="err-msg">Enter valid number!</p>}
-            </label>
-            <button className="input-btn" type="submit">
-              ADD USER
-            </button>
-          </form>
-        </div>
-      ) : (
-        // Update User form
-        <>
-          {user.length ? (
-            <div className="form-container">
-              <p className="form-title">Update User</p>
-              <form onSubmit={handleUpdate}>
-                <label className="input-label">User Name</label>
-                <input
-                  onChange={handleOnChange}
-                  value={getUserData.name}
-                  // placeholder={updateAbleUserData.name}
-                  required
-                  name="name"
-                  type="text"
-                />
-                <label className="input-label">Phone</label>
-                <input
-                  onChange={handleOnChange}
-                  value={getUserData.phone}
-                  // placeholder={updateAbleUserData.phone}
-                  required
-                  name="phone"
-                  type="text"
-                />
-                <label>
-                  {err && <p className="err-msg">Enter valid number!</p>}
-                </label>
-                <button className="input-btn" type="submit">
-                  UPDATE USER
-                </button>
-              </form>
-            </div>
-          ) : (
-            ""
-          )}
-        </>
-      )}
-      {/* User Data Table */}
-      <div className="table-container">
-        <div className="user-table-container">
-          <p className="table-title">User Data</p>
-          {user.length ? (
-            <div className="table-container">
-              <div className="user-data table-header">
-                <div className="data-row">NAME</div>
-                <div className="data-row">PHONE</div>
-                <div className="data-row">ACTION</div>
+    <div className="container">
+      <div className="main-container">
+        {/* ADD User form */}
+        {!isUpdate ? (
+          <div className="form-container">
+            <p className="form-title">Add User</p>
+            <form onSubmit={handleSubmit}>
+              <label className="input-label">User Name</label>
+              <input
+                onChange={handleOnChange}
+                // value={name}
+                required
+                type="text"
+                name="name"
+              />
+              <label className="input-label">Phone</label>
+              <input
+                onChange={handleOnChange}
+                // value={phone}
+                required
+                type="text"
+                name="phone"
+              />
+              <label>
+                {err && <p className="err-msg">Enter valid number!</p>}
+              </label>
+              <button className="input-btn" type="submit">
+                ADD USER
+              </button>
+            </form>
+          </div>
+        ) : (
+          // Update User form
+          <>
+            {user.length ? (
+              <div className="form-container">
+                <p className="form-title">Update User</p>
+                <form onSubmit={handleUpdate}>
+                  <label className="input-label">User Name</label>
+                  <input
+                    onChange={handleOnChange}
+                    value={getUserData.name}
+                    // placeholder={updateAbleUserData.name}
+                    required
+                    name="name"
+                    type="text"
+                  />
+                  <label className="input-label">Phone</label>
+                  <input
+                    onChange={handleOnChange}
+                    value={getUserData.phone}
+                    // placeholder={updateAbleUserData.phone}
+                    required
+                    name="phone"
+                    type="text"
+                  />
+                  <label>
+                    {err && <p className="err-msg">Enter valid number!</p>}
+                  </label>
+                  <button className="input-btn" type="submit">
+                    UPDATE USER
+                  </button>
+                </form>
               </div>
-              {user.map((user) => (
-                <div className="user-data user-data-content" key={user.id}>
-                  <div className="data-row data-overflow">{user.name}</div>
-                  <div className="data-row data-overflow">{user.phone}</div>
-                  <div className="data-row">
-                    <button onClick={() => navigate(`/view/${user.id}`)}>
-                      <BiShow className="icon-btn" />
-                    </button>
-                    <button onClick={() => getUpdateUser(user.id)}>
-                      <BiEdit className="icon-btn" />
-                    </button>
-                    <button onClick={() => handleDelete(user.id)}>
-                      <BiTrash className="icon-btn" />
-                    </button>
-                  </div>
+            ) : (
+              ""
+            )}
+          </>
+        )}
+        {/* User Data Table */}
+        <div className="table-container">
+          <div className="user-table-container">
+            <p className="table-title">User Data</p>
+            {user.length ? (
+              <div className="table-container">
+                <div className="user-data table-header">
+                  <div className="data-row">NAME</div>
+                  <div className="data-row">PHONE</div>
+                  <div className="data-row">ACTION</div>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="user-not-found">
-              No user found!{" "}
-              <span onClick={() => setIsUpdate(false)} className="add-user-req">
-                Add user
-              </span>
-            </div>
-          )}
+                {user.map((user) => (
+                  <div className="user-data user-data-content" key={user.id}>
+                    <div className="data-row data-overflow">{user.name}</div>
+                    <div className="data-row data-overflow">{user.phone}</div>
+                    <div className="data-row">
+                      <button onClick={() => navigate(`/view/${user.id}`)}>
+                        <BiShow className="icon-btn" />
+                      </button>
+                      <button onClick={() => getUpdateUser(user.id)}>
+                        <BiEdit className="icon-btn" />
+                      </button>
+                      <button onClick={() => handleDelete(user.id)}>
+                        <BiTrash className="icon-btn" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="user-not-found">
+                No user found!{" "}
+                <span
+                  onClick={() => setIsUpdate(false)}
+                  className="add-user-req"
+                >
+                  Add user
+                </span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
