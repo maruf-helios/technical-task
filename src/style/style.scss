@@ -1,5 +1,5 @@
 .main-container {
-  width: 40%;
+  width: 50%;
   background-color: #e0f1fc;
   align-items: center;
   margin: auto;
@@ -99,6 +99,10 @@
               span {
                 display: inline;
                 margin-right: 10px;
+                font-weight: bold;
+              }
+              button {
+                margin: 5px;
               }
             }
           }
