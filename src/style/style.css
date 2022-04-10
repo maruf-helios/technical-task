@@ -64,6 +64,10 @@
   color: red;
 }
 
+.main-container .main-table-container {
+  padding: 10px;
+}
+
 .main-container .main-table-container .user-table-container .table-title {
   text-align: center;
   font-size: 20px;
