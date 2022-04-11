@@ -41,7 +41,7 @@ const InputUserAndTable = () => {
       const id = {
         id: uuidv4(),
       };
-      setUser([...user, { ...getUserData, ...id }]);
+      setUser([...users, { ...getUserData, ...id }]);
       setErr(false);
     } else {
       setErr(true);
@@ -70,7 +70,6 @@ const InputUserAndTable = () => {
     } else setErr(true);
   };
 
-  // save user in state, localstorage
   useEffect(() => {
     dispatch(setAddUser(user));
   }, [user, dispatch]);
