@@ -3,12 +3,12 @@ import "../style/style.scss";
 import { BiEdit, BiTrash, BiShow } from "react-icons/bi";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
-
-//get user from localstorage
-const getUserFromLocalStorage = () => {
-  let userData = JSON.parse(localStorage.getItem("users-data")) || [];
-  return userData;
-};
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteUser,
+  setAddUser,
+  updateUser,
+} from "../Redux/Actions/UserAction";
 
 //phone number validate function
 const validatePhone = (phone) => {
@@ -16,10 +16,11 @@ const validatePhone = (phone) => {
 };
 
 const InputUserAndTable = () => {
-  const [user, setUser] = useState(getUserFromLocalStorage());
+  const { users } = useSelector((state) => state.userState);
+  const dispatch = useDispatch();
 
+  const [user, setUser] = useState(users);
   const [getUserData, setGetUserData] = useState({});
-
   const [err, setErr] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [updateUserId, setUpdateUserId] = useState("");
@@ -40,8 +41,7 @@ const InputUserAndTable = () => {
       const id = {
         id: uuidv4(),
       };
-      const userData = { ...getUserData, ...id };
-      setUser([...user, userData]);
+      setUser([...user, { ...getUserData, ...id }]);
       setErr(false);
     } else {
       setErr(true);
@@ -50,37 +50,30 @@ const InputUserAndTable = () => {
 
   //handle delete user
   const handleDelete = (id) => {
-    let deleteUser = user.filter((user) => user.id !== id);
-    setUser(deleteUser);
-    // user.length === 0 && setGetUserData({});
+    dispatch(deleteUser(id));
   };
 
   //get updateable user
   const getUpdateUser = (id) => {
     setIsUpdate(true);
     setUpdateUserId(id);
-    const findUser = user.find((user) => user.id === id);
+    const findUser = users.find((user) => user.id === id);
     setGetUserData(findUser);
   };
-
   //handle update user
   const handleUpdate = (e) => {
+    e.preventDefault();
     if (validatePhone(getUserData.phone)) {
-      let updateAbleUser = [...user];
-      let findUser = updateAbleUser.find((user) => user.id === updateUserId);
-      findUser.name = getUserData.name;
-      findUser.phone = getUserData.phone;
-      setUser(updateAbleUser);
+      dispatch(updateUser(updateUserId, getUserData.name, getUserData.phone));
       setIsUpdate(false);
       setErr(false);
     } else setErr(true);
-    e.preventDefault();
   };
 
-  // save user in localstorage
+  // save user in state, localstorage
   useEffect(() => {
-    localStorage.setItem("users-data", JSON.stringify(user));
-  }, [user]);
+    dispatch(setAddUser(user));
+  }, [user, dispatch]);
 
   return (
     <div className="main-container">
@@ -90,17 +83,10 @@ const InputUserAndTable = () => {
           <p className="form-title">Add User</p>
           <form onSubmit={handleSubmit}>
             <label className="input-label">User Name</label>
-            <input
-              onChange={handleOnChange}
-              // value={name}
-              required
-              type="text"
-              name="name"
-            />
+            <input onChange={handleOnChange} required type="text" name="name" />
             <label className="input-label">Phone</label>
             <input
               onChange={handleOnChange}
-              // value={phone}
               required
               type="text"
               name="phone"
@@ -116,7 +102,7 @@ const InputUserAndTable = () => {
       ) : (
         // Update User form
         <>
-          {user.length ? (
+          {users.length ? (
             <div className="form-container">
               <p className="form-title">Update User</p>
               <form onSubmit={handleUpdate}>
@@ -124,7 +110,6 @@ const InputUserAndTable = () => {
                 <input
                   onChange={handleOnChange}
                   value={getUserData.name}
-                  // placeholder={updateAbleUserData.name}
                   required
                   name="name"
                   type="text"
@@ -133,7 +118,6 @@ const InputUserAndTable = () => {
                 <input
                   onChange={handleOnChange}
                   value={getUserData.phone}
-                  // placeholder={updateAbleUserData.phone}
                   required
                   name="phone"
                   type="text"
@@ -155,14 +139,14 @@ const InputUserAndTable = () => {
       <div className="main-table-container">
         <div className="user-table-container">
           <p className="table-title">User Data</p>
-          {user.length ? (
+          {users.length ? (
             <div className="table-container">
               <div className="table-header">
                 <div className="data-row">NAME</div>
                 <div className="data-row">PHONE</div>
                 <div className="data-row">ACTION</div>
               </div>
-              {user.map((user) => (
+              {users.map((user) => (
                 <div className="user-data user-data-content" key={user.id}>
                   <div className="data-row data-overflow">
                     <span>Name:</span>

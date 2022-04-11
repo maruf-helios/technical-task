@@ -7,9 +7,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <InputUserAndTable /> */}
-        <Route path="/" element={<InputUserAndTable/>}/>
-        <Route path="view/:id" element={<ViewUserData/>}/>
+        <Route path="/" element={<InputUserAndTable />} />
+        <Route path="view/:id" element={<ViewUserData />} />
       </Routes>
     </BrowserRouter>
   );

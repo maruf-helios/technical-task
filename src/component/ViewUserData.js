@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import "../style/view-style.scss";
 
 const ViewUserData = () => {
   const { id } = useParams();
-  const userData = JSON.parse(localStorage.getItem("users-data"));
-  const findUser = userData.find((user) => user.id === id);
+
+  const { users } = useSelector((state) => state.userState);
+  const findUser = users.find((user) => user.id === id);
 
   return (
     <div className="view-container">
